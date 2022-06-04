@@ -25,7 +25,7 @@ const { Suspense } = React;
 
 // Define a query
 const RepositoryNameQuery = graphql`
-  query HomeQuery {
+  query ProfileQuery {
     hello
   }
 `;
@@ -34,7 +34,7 @@ const preloadedQuery = loadQuery(RelayEnvironment, RepositoryNameQuery, {
   /* query variables */
 });
 
-function Home(props: any) {
+function Profile(props: any) {
   const data = usePreloadedQuery(RepositoryNameQuery, props.preloadedQuery);
 
   const { saveUserInfo } = globalContext();
@@ -61,20 +61,20 @@ function Home(props: any) {
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={['1']}
+          defaultSelectedKeys={['2']}
           items={[
             {
               key: '1',
               icon: <ShoppingOutlined />,
               label: 'Minha Vitrine',
+              onClick: () => {
+                window.location.href = '/';
+              }
             },
             {
               key: '2',
               icon: <UserOutlined />,
               label: 'Perfil',
-              onClick: () => {
-                window.location.href = '/profile';
-              }
             },
             {
               key: '3',
@@ -221,22 +221,23 @@ function Home(props: any) {
   );
 }
 
-function HomeRoot(props: any) {
+function ProfileRoot(props: any) {
   const {Title} = Typography;
+
   return (
     <RelayEnvironmentProvider environment={RelayEnvironment}>
       <Suspense fallback={
                     <Layout style={{background: '#001529', width: '100vw', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                    <div style={{textAlign: 'center', padding: '20px'}}>
-                      <FireTwoTone twoToneColor={"#06A77D"} style={{fontSize: 48}} />
-                      <Title level={3} style={{color: '#F5F5F5', margin: 24}}>Loading...</Title>
-                    </div>
-                </Layout>
+                      <div style={{textAlign: 'center', padding: '20px'}}>
+                        <FireTwoTone twoToneColor={"#06A77D"} style={{fontSize: 48}} />
+                        <Title level={3} style={{color: '#F5F5F5', margin: 24}}>Loading...</Title>
+                      </div>
+                  </Layout>
       }>
-        <Home preloadedQuery={preloadedQuery} />
+        <Profile preloadedQuery={preloadedQuery} />
       </Suspense>
     </RelayEnvironmentProvider>
   );
 }
 
-export default HomeRoot;
+export default ProfileRoot;

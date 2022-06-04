@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<90e13191a765f6fe120a0ce5adf559e3>>
+ * @generated SignedSource<<3ecf9f557d873a7316db5d06c1e4a206>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,13 +9,13 @@
 // @ts-nocheck
 
 import { ConcreteRequest, Query } from 'relay-runtime';
-export type AppQuery$variables = {};
-export type AppQuery$data = {
+export type HomeQuery$variables = {};
+export type HomeQuery$data = {
   readonly hello: string;
 };
-export type AppQuery = {
-  variables: AppQuery$variables;
-  response: AppQuery$data;
+export type HomeQuery = {
+  variables: HomeQuery$variables;
+  response: HomeQuery$data;
 };
 
 const node: ConcreteRequest = (function(){
@@ -33,7 +33,7 @@ return {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "AppQuery",
+    "name": "HomeQuery",
     "selections": (v0/*: any*/),
     "type": "Query",
     "abstractKey": null
@@ -42,20 +42,20 @@ return {
   "operation": {
     "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "AppQuery",
+    "name": "HomeQuery",
     "selections": (v0/*: any*/)
   },
   "params": {
-    "cacheID": "26de248df3b95f11269a4b3b0440fc23",
+    "cacheID": "21655d62ad4483f46e3b8d2865fdf6c0",
     "id": null,
     "metadata": {},
-    "name": "AppQuery",
+    "name": "HomeQuery",
     "operationKind": "query",
-    "text": "query AppQuery {\n  hello\n}\n"
+    "text": "query HomeQuery {\n  hello\n}\n"
   }
 };
 })();
 
-(node as any).hash = "30f8771ea58e1f46084c990b282033e2";
+(node as any).hash = "bce294683902076b6911cc0e07c2e179";
 
 export default node;
