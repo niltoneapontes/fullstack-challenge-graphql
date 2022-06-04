@@ -5,7 +5,7 @@ import {
   loadQuery,
   usePreloadedQuery,
 } from 'react-relay/hooks';
-import RelayEnvironment from './RelayEnvironment';
+import RelayEnvironment from '../RelayEnvironment';
 
 import { PageHeader, Input, Col, Layout, Menu, Typography, Button, Card, Image, Grid, Row } from 'antd';
 import { MenuUnfoldOutlined, MenuFoldOutlined,
@@ -18,13 +18,13 @@ import { MenuUnfoldOutlined, MenuFoldOutlined,
   PlusCircleTwoTone,
   GooglePlusOutlined, } from '@ant-design/icons';
 import 'antd/dist/antd.css';
-import { AddRealtyModal } from './components/AddRealtyModal';
+import { AddRealtyModal } from '../components/AddRealtyModal';
 
 const { Suspense } = React;
 
 // Define a query
 const RepositoryNameQuery = graphql`
-  query AppQuery {
+  query HomeQuery {
     hello
   }
 `;
@@ -33,7 +33,7 @@ const preloadedQuery = loadQuery(RelayEnvironment, RepositoryNameQuery, {
   /* query variables */
 });
 
-function App(props: any) {
+function Home(props: any) {
   const data = usePreloadedQuery(RepositoryNameQuery, props.preloadedQuery);
 
   const [collapsed, setCollapsed] = useState<boolean>(false);
@@ -211,14 +211,14 @@ function App(props: any) {
   );
 }
 
-function AppRoot(props: any) {
+function HomeRoot(props: any) {
   return (
     <RelayEnvironmentProvider environment={RelayEnvironment}>
       <Suspense fallback={'Loading...'}>
-        <App preloadedQuery={preloadedQuery} />
+        <Home preloadedQuery={preloadedQuery} />
       </Suspense>
     </RelayEnvironmentProvider>
   );
 }
 
-export default AppRoot;
+export default HomeRoot;
