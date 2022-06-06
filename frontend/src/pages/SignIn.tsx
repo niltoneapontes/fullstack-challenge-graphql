@@ -10,8 +10,9 @@ export default function SignIn() {
   const { Title } = Typography;
 
   const handleGoogleLogin = (response: any) => {
+    console.log(response);
     saveUserInfo(response.credential);
-    window.location.pathname = "/";
+    // window.location.pathname = "/";
   };
 
   return (
@@ -19,6 +20,7 @@ export default function SignIn() {
       <FireTwoTone twoToneColor={"#06A77D"} style={{fontSize: 48}} />
       <Title level={3} style={{color: '#F5F5F5', margin: 24}}>Faça login para continuar</Title>
       <GoogleLogin
+        
         onSuccess={credentialResponse => {
           handleGoogleLogin(credentialResponse);
         }}

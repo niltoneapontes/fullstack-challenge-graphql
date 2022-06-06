@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {graphql} from 'react-relay';
 import {
   RelayEnvironmentProvider,
@@ -7,7 +7,7 @@ import {
 } from 'react-relay/hooks';
 import RelayEnvironment from '../RelayEnvironment';
 
-import { PageHeader, Input, Col, Layout, Menu, Typography, Button, Card, Image, Grid, Row } from 'antd';
+import { PageHeader, Input, Col, Layout, Menu, Typography, Button, Card, Image, Grid, Row, Tag, Avatar } from 'antd';
 import { MenuUnfoldOutlined, MenuFoldOutlined,
   UserOutlined,
   ShoppingOutlined,
@@ -20,6 +20,7 @@ import { MenuUnfoldOutlined, MenuFoldOutlined,
 import 'antd/dist/antd.css';
 import { AddRealtyModal } from '../components/AddRealtyModal';
 import { globalContext } from '../context/globalContext';
+import jwtDecode from 'jwt-decode';
 
 const { Suspense } = React;
 
@@ -37,13 +38,20 @@ const preloadedQuery = loadQuery(RelayEnvironment, RepositoryNameQuery, {
 function Profile(props: any) {
   const data = usePreloadedQuery(RepositoryNameQuery, props.preloadedQuery);
 
-  const { saveUserInfo } = globalContext();
+  const { saveUserInfo, getUserInfo } = globalContext();
 
   const [collapsed, setCollapsed] = useState<boolean>(false);
   const [addModal, setAddModal] = useState<boolean>(false);
+  const [user, setUser] = useState<any>({});
 
   const {Header, Content, Footer, Sider} = Layout;
   const { Title, Paragraph, Text } = Typography;
+
+  useEffect(() => {
+    const userCredential = getUserInfo();
+    const userInfo = jwtDecode(userCredential);
+    setUser(userInfo);
+  }, [])
 
   return (
     <Layout className='site-layout-background' style={{ minHeight: '100vh' }}>
@@ -99,7 +107,7 @@ function Profile(props: any) {
           }}
         >
             {collapsed ? <MenuUnfoldOutlined style={{color: '#f5f5f5', fontSize: 18}} onClick={() => setCollapsed(false)} /> : <MenuFoldOutlined style={{color:"#F5F5F5", fontSize: 18}} onClick={() => setCollapsed(true)} />}
-            <PageHeader title={<Title level={2} style={{color: '#F5F5F5', margin: 0, paddingLeft: 24}}>Minha Vitrine</Title>} style={{ padding: 0 }}/>
+            <PageHeader title={<Title level={2} style={{color: '#F5F5F5', margin: 0, paddingLeft: 24}}>Meu perfil</Title>} style={{ padding: 0 }}/>
         </Header>
         <Content
           className="site-layout-background"
@@ -109,103 +117,25 @@ function Profile(props: any) {
             minHeight: 280,
           }}
         >
-        <Row justify="start" >
-          <Col xs={24} sm={24} md={12} lg={8} style={{padding: 8}}>
-            <Card bordered={false} 
-                draggable
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-              }
-                }>
-                  <Image src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />
-                  <Title level={4}>Product Name</Title>
-                  <Paragraph>Description</Paragraph>
-                  <div style={{justifyContent: 'space-between', display: 'flex'}}>
-                  <Text>R$ 2500,00</Text>
-                  <Button type='primary'>ALUGAR</Button>
-                  </div>
+          <Row>
+            <Col xs={24} md={12} lg={8}>
+              <Card title="Dados pessoais" style={{ width: '100%' }}>
+                <Avatar size={56} icon={<UserOutlined />} style={{marginBottom: 16}} />
+                <Paragraph>
+                  <Text strong>Nome: </Text>
+                  <Text>{user.name}</Text>
+                </Paragraph>
+                <Paragraph>
+                  <Text strong>E-mail: </Text>
+                  <Text>{user.email}</Text>
+                </Paragraph>
+                {
+                user.email_verified ? 
+                  <Tag color="#87d068">E-mail verificado</Tag> : <Tag color="#ff4005">E-mail não verificado</Tag>
+                }
               </Card>
-          </Col>
-                    <Col xs={24} sm={24} md={12} lg={8} style={{padding: 8}}>
-            <Card bordered={false} 
-                draggable
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-              }
-                }>
-                  <Image src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />
-                  <Title level={4}>Product Name</Title>
-                  <Paragraph>Description</Paragraph>
-                  <div style={{justifyContent: 'space-between', display: 'flex'}}>
-                  <Text>R$ 2500,00</Text>
-                  <Button type='primary'>ALUGAR</Button>
-                  </div>
-              </Card>
-          </Col>
-                    <Col xs={24} sm={24} md={12} lg={8} style={{padding: 8}}>
-            <Card bordered={false} 
-                draggable
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-              }
-                }>
-                  <Image src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />
-                  <Title level={4}>Product Name</Title>
-                  <Paragraph>Description</Paragraph>
-                  <div style={{justifyContent: 'space-between', display: 'flex'}}>
-                  <Text>R$ 2500,00</Text>
-                  <Button type='primary'>ALUGAR</Button>
-                  </div>
-              </Card>
-          </Col>
-                    <Col xs={24} sm={24} md={12} lg={8} style={{padding: 8}}>
-            <Card bordered={false} 
-                draggable
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-              }
-                }>
-                  <Image src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />
-                  <Title level={4}>Product Name</Title>
-                  <Paragraph>Description</Paragraph>
-                  <div style={{justifyContent: 'space-between', display: 'flex'}}>
-                  <Text>R$ 2500,00</Text>
-                  <Button type='primary'>ALUGAR</Button>
-                  </div>
-              </Card>
-          </Col>
-                    <Col xs={24} sm={24} md={12} lg={8} style={{padding: 8}}>
-            <Card bordered={false} 
-                draggable
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-              }
-                }>
-                  <Image src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />
-                  <Title level={4}>Product Name</Title>
-                  <Paragraph>Description</Paragraph>
-                  <div style={{justifyContent: 'space-between', display: 'flex'}}>
-                  <Text>R$ 2500,00</Text>
-                  <Button type='primary'>ALUGAR</Button>
-                  </div>
-              </Card>
-          </Col>
-        </Row>
+            </Col>
+          </Row>
         </Content>
         <Footer style={{display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 8}}>
           Made with ❤️ by Nilton

@@ -1,15 +1,57 @@
 import { Button, Form, Input, Modal, Select } from "antd";
 import { useState } from "react";
-
+import { useMutation } from "react-relay";
+import { commitMutation, graphql } from "relay-runtime";
+import { Realty } from "../models/Realty";
+import RelayEnvironment from "../RelayEnvironment";
 interface AddRealtyModalProps {
   setAddModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export function AddRealtyModal({setAddModal} : AddRealtyModalProps) {
   const [form] = Form.useForm();
+  
 
   const handleAddRealty = () => {
     form.validateFields();
+    const fieldValues = form.getFieldsValue();
+    const { title, description, price, address, city, state, cep, contract, area, rooms, bathroom, garage, img_urls } = fieldValues;
+    const newRealty = new Realty({
+      title,
+      description,
+      price: parseFloat(price),
+      address,
+      city,
+      state,
+      cep,
+      contractType: contract,
+      area: parseFloat(area),
+      rooms: parseInt(rooms),
+      bathroom: parseInt(bathroom),
+      garage: parseInt(garage),
+      imageUrls: img_urls
+    });
+
+    commitMutation(RelayEnvironment, {
+      mutation: graphql`
+      mutation AddRealtyModalMutation($title: String!, $description: String!, $price: Float!, $address: String!, $city: String!, $state: String!, $cep: String!, $contractType: String!, $area: Float!, $rooms: Float!, $bathroom: Float!, $garage: Float!, $imageUrls: [String!]!) {
+        createRealty(title: $title, description: $description, price: $price, address: $address, city: $city, state: $state, cep: $cep, contractType: $contractType, area: $area, rooms: $rooms, bathroom: $bathroom, garage: $garage, imageUrls: $imageUrls) {
+          id
+        }
+      }
+    `,
+      variables: {
+          title: newRealty.title, description: newRealty.description, price: newRealty.price, address: newRealty.address, city: newRealty.city, state: newRealty.state, cep: newRealty.cep, contractType: newRealty.contractType, area: newRealty.area, rooms: newRealty.rooms, bathroom: newRealty.bathroom, garage: newRealty.garage, imageUrls: newRealty.imageUrls
+      },
+      onCompleted(response) {
+        console.log(response);
+        setAddModal(false);
+        form.resetFields();
+      },
+      updater: (store) => {
+        window.location.reload();
+      }
+    })
   }
 
   const handleError = () => {
@@ -68,12 +110,8 @@ export function AddRealtyModal({setAddModal} : AddRealtyModalProps) {
       <Form.Item label="Vagas" name="garage" rules={[{ required: true, message: 'Informe quantas vagas de garagem o imóvel possui' }]}>
         <Input inputMode="numeric" type="number"   placeholder="Digite aqui..."/>
       </Form.Item>
-      <Form.Item name="img_urls" label="URLs das Imagens">
-        <Input multiple  type="url" placeholder="https://image.jpg" style={{marginBottom: 8}}/>
-        <Input  placeholder="https://image.jpg" style={{marginBottom: 8}}/>
-        <Input  placeholder="https://image.jpg" style={{marginBottom: 8}}/>
-        <Input  placeholder="https://image.jpg" style={{marginBottom: 8}}/>
-        <Input  placeholder="https://image.jpg"/>
+      <Form.Item name="img_urls" label="URLs das Imagens"  rules={[{ required: true, message: 'Informe a URL para ao menos uma imagem. Você pode compartilhar um álbum do Google Photos, por exemplo.' }]}>
+        <Input  type="url" placeholder="https://image.jpg" style={{marginBottom: 8}}/>
       </Form.Item>
     </Form>
   </Modal>

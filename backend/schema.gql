@@ -4,17 +4,29 @@
 # -----------------------------------------------
 
 type Mutation {
-  createUser(name: String!): User!
-  deleteUser(id: String!): User!
-  updateUser(id: String!, name: String!): User!
+  createRealty(address: String!, area: Float!, bathroom: Float!, cep: String!, city: String!, contractType: String!, description: String!, garage: Float!, imageUrls: [String!]!, price: Float!, rooms: Float!, state: String!, title: String!): Realty!
+  deleteRealty(id: String!): Realty!
+  updateRealty(address: String!, area: Float!, bathroom: Float!, cep: String!, city: String!, contractType: String!, description: String!, garage: Float!, id: ID!, imageUrls: [String!]!, price: Float!, rooms: Float!, state: String!, title: String!): Realty!
 }
 
 type Query {
   hello: String!
-  users: [User!]!
+  realtys: [Realty!]!
 }
 
-type User {
+type Realty {
+  address: String!
+  area: Float!
+  bathroom: Float!
+  cep: String!
+  city: String!
+  contractType: String!
+  description: String!
+  garage: Float!
   id: ID!
-  name: String!
+  imageUrls: [String!]!
+  price: Float!
+  rooms: Float!
+  state: String!
+  title: String!
 }

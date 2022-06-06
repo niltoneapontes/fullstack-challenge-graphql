@@ -13,6 +13,7 @@
     "@react-oauth/google": "^0.2.6",
     "antd": "^4.20.7",
     "babel-plugin-relay": "^13.2.0",
+    "jwt-decode": "^3.1.2",
     "less": "^4.1.2",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
