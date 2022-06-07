@@ -59,7 +59,7 @@ export function AddRealtyModal({setAddModal} : AddRealtyModalProps) {
   }
 
   return (
-    <Modal title="Adicionar imóvel" visible onCancel={() => setAddModal(false)} onOk={handleAddRealty}>
+    <Modal title="Adicionar meu imóvel" visible onCancel={() => setAddModal(false)} onOk={handleAddRealty}>
         <Form
       name="basic"
       form={form}
