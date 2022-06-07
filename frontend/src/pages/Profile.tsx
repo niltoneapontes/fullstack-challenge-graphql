@@ -24,20 +24,7 @@ import jwtDecode from 'jwt-decode';
 
 const { Suspense } = React;
 
-// Define a query
-const RepositoryNameQuery = graphql`
-  query ProfileQuery {
-    hello
-  }
-`;
-
-const preloadedQuery = loadQuery(RelayEnvironment, RepositoryNameQuery, {
-  /* query variables */
-});
-
 function Profile(props: any) {
-  const data = usePreloadedQuery(RepositoryNameQuery, props.preloadedQuery);
-
   const { saveUserInfo, getUserInfo } = globalContext();
 
   const [collapsed, setCollapsed] = useState<boolean>(false);
@@ -164,7 +151,7 @@ function ProfileRoot(props: any) {
                       </div>
                   </Layout>
       }>
-        <Profile preloadedQuery={preloadedQuery} />
+        <Profile/>
       </Suspense>
     </RelayEnvironmentProvider>
   );

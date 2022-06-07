@@ -12,13 +12,14 @@ export default function SignIn() {
   const handleGoogleLogin = (response: any) => {
     console.log(response);
     saveUserInfo(response.credential);
-    // window.location.pathname = "/";
+    window.location.pathname = "/";
   };
 
   return (
     <Layout style={{ minHeight: '100vh', background: '#001529', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <FireTwoTone twoToneColor={"#06A77D"} style={{fontSize: 48}} />
-      <Title level={3} style={{color: '#F5F5F5', margin: 24}}>Faça login para continuar</Title>
+      <Title level={2} style={{ color: '#fff', fontSize: '48px', margin: 0 }}>myimob</Title>
+      <Title level={4} style={{color: '#E5E5E5', margin: 24}}>Faça login para continuar</Title>
       <GoogleLogin
         
         onSuccess={credentialResponse => {

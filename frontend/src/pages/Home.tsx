@@ -30,13 +30,6 @@ import { EditRealtyModal } from '../components/EditRealtyModal';
 
 const { Suspense } = React;
 
-// Define a query
-const RepositoryNameQuery = graphql`
-  query HomeQuery {
-    hello
-  }
-`;
-
 export const HomeRealtyQuery = graphql`
   query HomeRealtyQuery {
     realtys {
@@ -63,9 +56,7 @@ const preloadedQuery = loadQuery(RelayEnvironment, HomeRealtyQuery, {
 });
 
 function Home(props: any) {
-  const data = usePreloadedQuery(HomeRealtyQuery, props.preloadedQuery);
-
-  console.log('Data: ', data);
+  const data = usePreloadedQuery(HomeRealtyQuery, props.preloadedQuery) as any;
 
   const { saveUserInfo } = globalContext();
 
@@ -166,7 +157,7 @@ function Home(props: any) {
           }}
         >
         <Row justify="start" >
-          {data !== 0 ? data.realtys && data.realtys.map((realty: any) => (
+          {data ? data.realtys && data.realtys.map((realty: any) => (
             <Col xs={24} sm={24} md={12} lg={8} style={{padding: 8}}>
               <Card bordered={false} 
                   draggable

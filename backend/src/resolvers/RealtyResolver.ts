@@ -1,7 +1,7 @@
 import { Arg, Args, ArgsType, Field, ID, Mutation, Query, Resolver } from "type-graphql";
 import { Realty } from "../models/Realty";
 import crypto from 'crypto';
-
+import { createRealtyOnMongo, deleteRealtyOnMongo, getAllRealtiesOnMongo, updateRealtyOnMongo } from "../services/mongodb";
 
 @ArgsType()
 class CreateRealtyArgs {
@@ -92,28 +92,18 @@ class UpdateRealtyArgs {
 
 @Resolver()
 export class RealtyResolver {
-
-  private data: Realty[] = [];
-
-  @Query(() => String)
-  async hello() {
-      return 'Hello GraphQL'
-  }
-
   @Query(() => [Realty])
   async realtys() {
-    return this.data;
+    return getAllRealtiesOnMongo();
   }
-
-
 
   @Mutation(() => Realty)
   async createRealty(
     @Args() { title, description, price, address, city, state, cep, contractType, area, rooms, bathroom, garage, imageUrls }: CreateRealtyArgs
 
   ) {
-    const realty = {id: crypto.randomUUID(), title, description, price, address, city, state, cep, contractType, area, rooms, bathroom, garage, imageUrls};
-    this.data.push(realty);
+    const newRealty = {id: crypto.randomUUID(), title, description, price, address, city, state, cep, contractType, area, rooms, bathroom, garage, imageUrls};
+    const realty = await createRealtyOnMongo(newRealty);
     return realty;
   }
 
@@ -122,11 +112,7 @@ export class RealtyResolver {
     @Arg('id') id: string
     ) 
     {
-    const realty = this.data.find(realty => realty.id === id);
-    if (!realty) {
-      throw new Error('Realty not found');
-    }
-    this.data = this.data.filter(realty => realty.id !== id);
+    const realty = await deleteRealtyOnMongo(id);
     return realty;
   }
 
@@ -134,11 +120,7 @@ export class RealtyResolver {
   async updateRealty(
     @Args() { id, title, description, price, address, city, state, cep, contractType, area, rooms, bathroom, garage, imageUrls }: UpdateRealtyArgs
   ) {
-    const realty = this.data.find(Realty => Realty.id === id);
-    if (!realty) {
-      throw new Error('Realty not found');
-    }
-    realty.title = title;
+    const realty = await updateRealtyOnMongo({id, title, description, price, address, city, state, cep, contractType, area, rooms, bathroom, garage, imageUrls});
     return realty;
   }
 }

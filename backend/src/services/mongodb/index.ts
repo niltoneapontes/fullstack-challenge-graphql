@@ -6,7 +6,7 @@ export async function createMongoConnection() {
   return await mongoose.connect('mongodb://localhost:27017/myimob');
 }
 
-export const getAllRealties = async () => {
+export const getAllRealtiesOnMongo = async () => {
   try {
     const connection = await createMongoConnection();
   const Realty = connection.model('Realty', realtySchema);
@@ -16,7 +16,7 @@ export const getAllRealties = async () => {
   }
 }
 
-export const createRealty = async (realty: Realty) => {
+export const createRealtyOnMongo = async (realty: Realty) => {
   try {
     const connection = await createMongoConnection();
     const Realty = connection.model('Realty', realtySchema);
@@ -42,7 +42,7 @@ export const createRealty = async (realty: Realty) => {
   }
 }
 
-export const updateRealty = async (realty: Realty) => {
+export const updateRealtyOnMongo = async (realty: Realty) => {
   try {
     const connection = await createMongoConnection();
     const Realty = connection.model('Realty', realtySchema);
@@ -52,7 +52,7 @@ export const updateRealty = async (realty: Realty) => {
   }
 }
 
-export const deleteRealty = async (id: string) => {
+export const deleteRealtyOnMongo = async (id: string) => {
   try {
     const connection = await createMongoConnection();
     const Realty = connection.model('Realty', realtySchema);

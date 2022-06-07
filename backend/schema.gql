@@ -10,7 +10,6 @@ type Mutation {
 }
 
 type Query {
-  hello: String!
   realtys: [Realty!]!
 }
 
